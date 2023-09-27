@@ -1,0 +1,229 @@
+
+# - examples:
+#     EXAMPLE_OPTIONS: 1|785150
+#     EXAMPLE_FIXED_VAR: 1
+#     EXAMPLE_RANGE: 1-100
+#     EXAMPLE_NEGATIVE_RANGE: -10-25
+#     EXAMPLE_CONDITION_TO_FIXED_VAR:
+#         - IF:EXAMPLE_FIXED_VAR=2:5
+#     EXAMPLE_COPY:
+#         - COPY_THIS_PARAM
+#     EXAMPLE_CONDITION_TO_FIXED_VAR:
+#         - IF:EXAMPLE_FIXED_VAR=2:COPY_THIS_PARAM
+#     ARMING_REQUIRE: 
+#         - 1                                 # should be 1
+#         - 0-100                             # should be between 0 and 100
+#         - -15-30                            # should be between -15 and -30
+#         - 1|3|5                             # should be 1, 3 or 5
+#         - IF:ARMING_EQUALS=0:1-3             # should be between 1-3 if ARMING_CHECK is 0
+#         - IF:ARMING_RANGE=1-5:4-7           # should be between 4-7 if ARMING_CHECK is between 1 and 5
+#         - IF:ARMING_OPTION=1|2|3:4-7        # should be between 4-7 if ARMING_CHECK is between 1,2 or 3
+#         - IF:ARMING_VALUE=0:ARMING_COPY     # should be like ARMING_RUDDER if ARMING_CHECK is 0 
+#         - =TRIM_ARSPD_CM/100                # do easy calculations
+
+
+
+- ACRO_LOCKING: 0
+
+- arming:
+    ARMING_CHECK: 1|785406
+    ARMING_REQUIRE: 1
+    ARMING_RUDDER: 0
+
+- ekf:
+    EK2_ENABLE: 1
+    AHRS_EKF_TYPE: 2
+    EK2_GSF_ENABLE: 0
+    EK2_GSF_USE_MASK: 0
+
+- RC mapping: 
+    RCMAP_THROTTLE: 1-4
+    RCMAP_PITCH: 1-4
+    RCMAP_ROLL: 1-4
+    RCMAP_YAW: 1-4
+
+- return to launch:
+    RTL_SINK_MAX: 2
+    RTL_ALT_MIN: 50-400
+    ALT_HOLD_RTL: 10000-40000
+    RTL_ALT_HOME: 50-200
+    RTL_LVL_RLL_LMT: 2
+    RTL_RADIUS: 80-120
+    WP_LOITER_RAD: 100-200
+    RTL_RADIUS: 60-120
+    
+
+- LEVEL_ROLL_LIMIT: 1-5
+
+- imu:
+    INS_GYRO_FILTER: 60-80
+    INS_ACCEL_FILTER: 20
+    INS_GYRO_RATE: 1|2
+
+- pid:
+    SCHED_LOOP_RATE: 100-300
+    PTCH_AGL_FLTT: 3 
+    PTCH_AGL_P: 2 
+    RLL_AGL_FLTT: 3 
+    RLL_AGL_P: 2
+    SCALING_SPEED: =TRIM_ARSPD_CM/100
+
+- failsafe: 
+    FS_LONG_ACTN: 1
+    FS_LONG_TIMEOUT: 2
+    FS_SHORT_ACTN: 2
+    FS_SHORT_TIMEOUT: 1
+
+
+- servos:
+    ONESHOT_MASK: <0
+    SERVO_RATE: 51-400
+    SERVO_AUTO_TRIM: 0
+
+- FLTMODE_CH: 6-12
+
+- logging:
+    LOG_BACKEND_TYPE: 1
+    LOG_DISARMED: 1
+    LOG_FILE_DSRMROT: 0
+
+- rc_setup:
+    RSSI_TYPE: 3
+    THR_SUPP_MAN: 1
+    RC1_DZ: 0-10
+    RC2_DZ: 0-10
+    RC3_DZ: 0-10
+    RC4_DZ: 0-10
+    RC_OPTIONS: 800|11040
+    RC5_OPTIONS: 153
+
+- serial:
+    SERIAL1_OPTIONS: 0
+    SERIAL2_OPTIONS: 0
+    SERIAL3_OPTIONS: 0
+    SERIAL4_OPTIONS: 0
+    SERIAL5_OPTIONS: 0
+    SERIAL6_OPTIONS: 0
+    SERIAL7_OPTIONS: 0
+    SERIAL8_OPTIONS: 0
+
+- battery:
+    BATT_CELL_COUNT: 0-12
+    BATT_MONITOR: 4
+    BATT_CAPACITY: 100-10000
+    BATT_FS_VOLTSRC: 1
+    BATT_LOW_CV:  3.7
+    BATT_CRT_CV: 3.0
+    BATT_CELL_DT_V: 4.25
+    BATT_CELL_VFULL: 4.12
+    compensation: 
+      FWD_BAT_VOLT_MIN: 
+        - 1-40
+        - =BATT_CELL_COUNT*3.5
+      FWD_BAT_VOLT_MAX: 
+        - 1-40
+        - =BATT_CELL_COUNT*4.20
+
+
+    # BATT_LOW_VOLT 0
+
+# BATT_ARM_VOLT
+
+
+- gps:
+    rate: 
+      GPS_RATE_MS: 100
+    constellations: 
+      GPS_GNSS_MODE: 7|71
+    Auto enable SBAS on the GPS module: 
+      GPS_SBAS_MODE: 1
+
+- osd:
+    for Wh based efficiency items:
+      OSD_EFF_UNIT: 1
+    OSD_W_ASPD_HIGH: =ARSPD_FBW_MAX*1.5
+    OSD_W_ASPD_LOW: =ARSPD_FBW_MIN*0.8
+    OSD_W_BLHTEMP: 80-110
+    OSD_W_NSAT: 8-9
+    OSD_W_RSSI: 70-80
+    # warning:
+    #   OSD_W_: 
+
+
+# - FrSky: FRSKY_OPTIONS = 1 to have air speed and ground speed in FrSky telemetry / Yaapu
+# - XF/ELRS: RC_OPTIONS = 800 (arming check 0 throttle + CRSF telem passthrough + suppress CRSF related messages)
+
+
+# - Max roll and pitch angles: 
+- stab:
+    LIM_ROLL_CD: 4500-6000
+    LIM_PITCH_MIN: -3000-4500
+    LIM_PITCH_MAX: 3000-4500
+    STALL_PREVENTION: 1
+
+- expo:
+    MAN_EXPO_PITCH: 20-70
+    MAN_EXPO_ROLL: 20-70
+    MAN_EXPO_RUDDER: 20-50
+
+
+# - Acro roll rates: ACRO_ROLL_RATE / ACRO_PITCH_RATE
+# - Climb before turn in RTL: FLIGHT_OPTIONS bit 4 (16)
+# - TECS tuning: mainly: 
+- tecs:
+    ARSPD_FBW_MIN:
+        - 11-20     # 40-60kph
+#        -           # 20% more than 
+    ARSPD_FBW_MAX:
+        - 16-30     # 50% auf ARSPD_FBW_MIN
+        - =ARSPD_FBW_MIN*1.5
+    TECS_CLMB_MAX: 2-15 
+    
+    TECS_SINK_MIN: 1-5
+    TECS_SINK_MAX: 5-10
+    
+    # TECS_TIME_CONST:
+    # TECS_RLL2THR:
+    TECS_PITCH_MIN: -15-25
+    TECS_PITCH_MAX: 10-30
+
+    FBWB_CLIMB_RATE: TECS_CLMB_MAX
+    FBWB_PITCH_DOWN: -2-5
+    MIN_GNDSPD_CM: 833-1000
+
+
+
+
+# Michel Pastor, [05.03.2021, 18:40:46]:
+# Note that sink min is not linked to tecs_pitch_min
+# tecs_pitch_min is linked to tecs_sink_max, not min
+
+
+# - Sink min: with 0 trottle you pitch down only enough to stay around TRIM_ARSPD_CM and you set the vspeed in TECS_SINK_MIN
+# - Sink max: with 0 throttle you pitch down as much as you want until you reach either the vspeed you want or ARSPD_FBW_MAX and you enter pitch and vspeed in TECS_PITCH_MIN and TECS_SINK_MAX
+
+# You might want to add to set STAB_PITCH_DOWN to the descent angle
+#  Not a hard limit but if your plane needs 15° down to fly there is a problem
+# Your max descent angle is 15° no ? Usually mine is like 1-2°. 4 for the Dart
+
+
+
+- trim:
+    TRIM_PITCH_CD: 0-1000
+    TRIM_PITCH: 1-10
+
+# # ! - Cruise throttle at 50% in manual throttle modes: FLIGHT_OPTIONS bit 10
+# # - Required mission items: ARMING_MIS_ITEMS
+
+
+- THR_SLEWRATE: 50-99
+- THR_AUTO_SRATE: 50-99
+- KFF_THRAT2PTCH: -1-10
+- KFF_THR2PTCH: -1-10
+
+- buzzer:
+    NTF_BUZZ_TYPES: 1-3
+
+- dshot:
+    SERVO_BLH_OTYPE: 4|6
+    SERVO_BLH_MASK: 1-10
